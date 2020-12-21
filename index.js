@@ -1,8 +1,6 @@
 let logicSyms = ['~','&','|','->','==', '@'];
 
 
-const leftIndices = [];
-const rightIndices = [];
 
 
 function findIndices(str) {
@@ -17,9 +15,7 @@ function findIndices(str) {
     console.log(`left: ${leftIndices}, right: ${rightIndices}`);
 }
 
-const rightPaired = new Array(rightIndices.length).fill(false);
-const leftPaired = new Array(rightIndices.length).fill(false);
-const pairs = [];
+
 
 function getPairs () {
     for (let i= leftIndices.length -1; i >= 0; i--) {
@@ -43,7 +39,7 @@ console.log(rightPaired)
 console.log(leftPaired);
 */
 
-subStrs = []
+
 function parsePar (str) {
     for (let i=0; i < pairs.length; i++) {
         let sub = str.slice(pairs[i][0], pairs[i][1] +1);
@@ -63,14 +59,21 @@ function createHTML(subStrs) {
 }
 
 
-const errMsg = document.getElementById('errMsg');
 
-const inStr = document.getElementById('htmlInput1Id');
+
+//const inStr = document.getElementById('htmlInput1Id');
 
 
 
 function makeList () {
-    let str = inStr.value;
+    const errMsg = document.getElementById('errMsg');
+    let str = document.getElementById('htmlInput1Id').value;
+    let leftIndices = [];
+    let rightIndices = [];
+    let rightPaired = new Array(rightIndices.length).fill(false);
+    let leftPaired = new Array(rightIndices.length).fill(false);
+    let pairs = [];
+    let subStrs = []
     let ind = findIndices(str);
     if (!(rightIndices.length === leftIndices.length)) {
         errMsg.removeAttribute('hidden');
