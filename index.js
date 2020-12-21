@@ -1,5 +1,13 @@
 let logicSyms = ['~','&','|','->','==', '@'];
 
+const errMsg = document.getElementById('errMsg');
+//let str = document.getElementById('htmlInput1Id').value;
+let leftIndices = [];
+let rightIndices = [];
+let rightPaired = new Array(rightIndices.length).fill(false);
+let leftPaired = new Array(rightIndices.length).fill(false);
+let pairs = [];
+let subStrs = [];
 
 
 
@@ -16,8 +24,20 @@ function findIndices(str) {
 }
 
 
-
 function getPairs () {
+    for(let i = 0; i < rightIndices.length; i++) {
+        for(let j = leftIndices.length -1; j >= 0; j--) {
+            if((leftIndices[j] < rightIndices[i]) && !rightPaired[i] && !leftPaired[j]) {
+                pairs.push([leftIndices[j], rightIndices[i]]);
+                rightPaired[i] = true;
+                leftPaired[j] = true;
+            }
+        }
+    }
+}
+
+
+/*function getPairs () {
     for (let i= leftIndices.length -1; i >= 0; i--) {
         for (let j = 0; j < rightIndices.length; j++) {
             if ((rightIndices[j] > leftIndices[i]) && !rightPaired[j] && !leftPaired[i]) {
@@ -27,7 +47,7 @@ function getPairs () {
             }
         }
     }
-}
+}*/
 /*
 let testStr = '(a@((b@c)@(d@e)@f)@g)'
 let ind = findIndices(testStr);
@@ -66,14 +86,7 @@ function createHTML(subStrs) {
 
 
 function makeList () {
-    const errMsg = document.getElementById('errMsg');
     let str = document.getElementById('htmlInput1Id').value;
-    let leftIndices = [];
-    let rightIndices = [];
-    let rightPaired = new Array(rightIndices.length).fill(false);
-    let leftPaired = new Array(rightIndices.length).fill(false);
-    let pairs = [];
-    let subStrs = []
     let ind = findIndices(str);
     if (!(rightIndices.length === leftIndices.length)) {
         errMsg.removeAttribute('hidden');
@@ -82,7 +95,12 @@ function makeList () {
     getPairs(ind);
     console.log(pairs);
     parsePar (str);
-    createHTML(subStrs)
+    createHTML(subStrs);
+    if (!subStrs.includes(str)) {
+        let li = document.createElement('li');
+        li.innerText = str;
+        list.appendChild(li);
+    }
 }
 
 const button = document.getElementById('generateOOOId');
